@@ -1,7 +1,7 @@
 ## Sidecountry - Product module
 E-commerce based product webpage
 
-
+---
 #### For Cassandra NoSQL DBMS
   1. Installed using Homebrew, which is a package manager for OS X  
     `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
