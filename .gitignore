@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+productsDBSeed.csv
+photosDBSeed.csv
+skusDBSeed.csv
+stylesDBSeed.csv
+mockServerForSchema-less.js
+
+artillery.yml
+import_sidecountry*

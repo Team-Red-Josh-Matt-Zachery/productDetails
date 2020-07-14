@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import ProductDetails from './productDetails/ProductDetails';
 import MainCarousel from './carousel/MainCarousel';
 import Description from './Description';
@@ -16,7 +17,7 @@ class App extends Component {
       results: [],
       activeResult: [],
       currentStyle: 0,
-      currentProduct: 4,
+      currentProduct: Math.floor(Math.random() * 1000 + 1),
       averageRating: 0,
       starPercentage: 0,
       modal: false,
@@ -29,33 +30,56 @@ class App extends Component {
 
   componentDidMount() {
     this.getProductData();
-    this.getReviewData();
+    // this.getReviewData();
     this.getProductImages();
   }
 
   getProductData() {
     const { currentProduct } = this.state;
-    fetch('http://52.26.193.201:3000/products/list')
+    // fetch('http://52.26.193.201:3000/products/list')
+    fetch(`/products?productID=${currentProduct}`)
       .then((res) => res.json())
-      .then((data) => this.setState({ products: data[currentProduct - 1] }));
+      .then((data) => {
+        console.log(data.results[0]);
+        this.setState({
+          products: data.results[0],
+          starPercentage: data.results[0].rating,
+          averageRating: data.results[0].rating / 20,
+        });
+      });
   }
 
-  getReviewData() {
-    const { currentProduct } = this.state;
-    fetch(`http://52.26.193.201:3000/reviews/${currentProduct}/list`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ reviews: data.results }))
-      .then(() => this.averageStarRating());
-  }
+  // getReviewData() {
+  //   const { currentProduct } = this.state;
+  //   fetch(`reviews/${currentProduct}`)
+  //     .then((res) => res.json())
+  //     .then((data) => this.setState({ reviews: data.results }))
+  //     .then(() => this.averageStarRating());
+  // }
 
   getProductImages() {
     const { currentStyle, currentProduct } = this.state;
-    fetch(`http://52.26.193.201:3000/products/${currentProduct}/styles/`)
+    // fetch(`http://52.26.193.201:3000/products/${currentProduct}/styles/`)
+    let build = [];
+    fetch(`/products/styles?productID=${currentProduct}`)
       .then((res) => res.json())
       .then((data) => {
+        build.push(data.results[0]);
+      });
+    fetch(`/products/photos?productID=${currentProduct}`)
+      .then((res) => res.json())
+      .then((data) => {
+        build[0]['photos'] = data.results[0];
+      });
+    fetch(`/products/skus?productID=${currentProduct}`)
+      .then((res) => res.json())
+      .then((data) => {
+        build[0]['skus'] = data.results[0];
+      })
+      .then(() => {
         this.setState({
-          results: data.results,
-          activeResult: data.results[currentStyle],
+          results: build,
+          activeResult: build[0],
         });
       });
   }
@@ -65,25 +89,26 @@ class App extends Component {
   // }
 
   selectModal(info = '') {
+    const { modal } = this.state;
     this.setState({
-      modal: !this.state.modal,
+      modal: !modal,
       modalInfo: info,
-    }); // true/false toggle
+    });
   }
 
   averageStarRating() {
     const { reviews } = this.state;
     let ratingSum = 0;
-    reviews.map((review) => {
+    reviews.forEach((review) => {
       ratingSum += review.rating;
     });
     if (ratingSum) {
       const averageRating = ratingSum / reviews.length;
       const starPercentage = (averageRating / 5) * 100;
-      this.setState({
-        starPercentage,
-        averageRating,
-      });
+      // this.setState({
+      //   starPercentage,
+      //   averageRating,
+      // });
     }
   }
 
@@ -97,27 +122,6 @@ class App extends Component {
     this.setState({ activeResult: style });
   }
 
-  // toggleStar(x) {
-  //   x.classList.toggle('bi-star-fill');
-  // }
-
-  // toggleStar(e) {
-  //   const tgt = e.target.firstElementChild;
-  //   tgt.classList.toggle('bi-star-fill');
-  //   tgt.classList.toggle('bi-star');
-  // }
-
-  // toggleStar(e) {
-  //   const icon = document.getElementById('favoriteButton');
-  //   if (icon.classList.contains('bi bi-star-fill')) {
-  //     icon.classList.remove('bi bi-star-fill');
-  //     icon.classList.add('bi bi-star');
-  //   } else {
-  //     icon.classList.remove('bi bi-star');
-  //     icon.classList.add('bi bi-star-fill');
-  //   }
-  // }
-
   render() {
     const {
       reviews,
@@ -130,16 +134,17 @@ class App extends Component {
       modal,
     } = this.state;
 
-    console.log(
-      'results',
-      results,
-      'app actdiveResult',
-      activeResult,
-      'products',
-      products,
-      'reviews',
-      reviews,
-    );
+    console.log(this.state.results);
+    // console.log(
+    //   'results',
+    //   results,
+    //   'app activeResult',
+    //   activeResult,
+    //   'products',
+    //   products,
+    //   'reviews',
+    //   reviews,
+    // );
     return (
       <div className="container-fluid mb-5">
         <div className="jumbotron jumbotron-fluid">

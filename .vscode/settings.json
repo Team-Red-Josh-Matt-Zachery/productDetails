@@ -11,6 +11,9 @@
   "javascript.updateImportsOnFileMove.enabled": "never",
   "javascript.validate.enable": false,
   "cSpell.words": [
-    "imgkey"
+    "imgkey",
+    "mazeapp",
+    "productdetails",
+    "skus"
   ]
 }
