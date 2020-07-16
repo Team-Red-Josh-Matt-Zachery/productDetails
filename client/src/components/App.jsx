@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import ProductDetails from './productDetails/ProductDetails';
 import MainCarousel from './carousel/MainCarousel';
 import Description from './Description';
 import Thumbnails from './Thumbnails';
 import Checklist from './Checklist';
-import Modal from './Modal';
+// import Modal from './Modal';
 
 class App extends Component {
   constructor() {
@@ -16,7 +15,7 @@ class App extends Component {
       reviews: [],
       results: [],
       activeResult: [],
-      currentStyle: 0,
+      // currentStyle: 0,
       currentProduct: Math.floor(Math.random() * 1000 + 1),
       averageRating: 0,
       starPercentage: 0,
@@ -37,10 +36,9 @@ class App extends Component {
   getProductData() {
     const { currentProduct } = this.state;
     // fetch('http://52.26.193.201:3000/products/list')
-    fetch(`/products?productID=${currentProduct}`)
+    fetch(`/products/${currentProduct}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.results[0]);
         this.setState({
           products: data.results[0],
           starPercentage: data.results[0].rating,
@@ -58,20 +56,26 @@ class App extends Component {
   // }
 
   getProductImages() {
-    const { currentStyle, currentProduct } = this.state;
+    const { currentProduct } = this.state;
     // fetch(`http://52.26.193.201:3000/products/${currentProduct}/styles/`)
-    let build = [];
-    fetch(`/products/styles?productID=${currentProduct}`)
+    const build = [];
+    fetch(`/products/${currentProduct}/styles`)
       .then((res) => res.json())
       .then((data) => {
         build.push(data.results[0]);
       });
-    fetch(`/products/photos?productID=${currentProduct}`)
+    fetch(`/products/${currentProduct}/photos`)
       .then((res) => res.json())
       .then((data) => {
         build[0]['photos'] = data.results[0];
+      })
+      .then(() => {
+        this.setState({
+          results: build,
+          activeResult: build[0],
+        });
       });
-    fetch(`/products/skus?productID=${currentProduct}`)
+    fetch(`/products/${currentProduct}/skus`)
       .then((res) => res.json())
       .then((data) => {
         build[0]['skus'] = data.results[0];
@@ -96,21 +100,21 @@ class App extends Component {
     });
   }
 
-  averageStarRating() {
-    const { reviews } = this.state;
-    let ratingSum = 0;
-    reviews.forEach((review) => {
-      ratingSum += review.rating;
-    });
-    if (ratingSum) {
-      const averageRating = ratingSum / reviews.length;
-      const starPercentage = (averageRating / 5) * 100;
-      // this.setState({
-      //   starPercentage,
-      //   averageRating,
-      // });
-    }
-  }
+  // averageStarRating() {
+  //   const { reviews } = this.state;
+  //   let ratingSum = 0;
+  //   reviews.forEach((review) => {
+  //     ratingSum += review.rating;
+  //   });
+  //   if (ratingSum) {
+  //     const averageRating = ratingSum / reviews.length;
+  //     const starPercentage = (averageRating / 5) * 100;
+  //     // this.setState({
+  //     //   starPercentage,
+  //     //   averageRating,
+  //     // });
+  //   }
+  // }
 
   handleChange(e, style) {
     e.preventDefault();
@@ -134,17 +138,6 @@ class App extends Component {
       modal,
     } = this.state;
 
-    console.log(this.state.results);
-    // console.log(
-    //   'results',
-    //   results,
-    //   'app activeResult',
-    //   activeResult,
-    //   'products',
-    //   products,
-    //   'reviews',
-    //   reviews,
-    // );
     return (
       <div className="container-fluid mb-5">
         <div className="jumbotron jumbotron-fluid">

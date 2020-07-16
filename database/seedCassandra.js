@@ -4,7 +4,7 @@ const csvWriter = require('csv-write-stream');
 const faker = require('faker');
 const { Faker } = require('fakergem');
 
-const SEED_AMOUNT = 1e3;
+const SEED_AMOUNT = 1e7;
 const writeProducts = csvWriter();
 const writePhotos = csvWriter();
 const writeStyles = csvWriter();
@@ -32,9 +32,6 @@ const seedDataGeneration = () => {
         name: Faker.Commerce.productName(),
         rating: Faker.Number.between(1, 100),
         slogan: faker.company.catchPhrase(),
-        x_array: [
-          Faker.Hipster.word(), Faker.Hipster.word(), Faker.Hipster.word(),
-        ],
       });
       if (i <= 10000) {
         heapy = writeStyles.write({
@@ -45,7 +42,7 @@ const seedDataGeneration = () => {
         });
         heapy = writePhotos.write({
           id: ((i - 1) % 1000) + 1,
-          thumbnail_url: Faker.LoremPixel.image('50x50'),
+          thumbnail_url: Faker.LoremPixel.image(),
           url: Faker.LoremPixel.image(),
         });
         heapy = writeSkus.write({

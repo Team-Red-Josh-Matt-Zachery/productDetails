@@ -9,7 +9,8 @@
     "start": "concurrently --kill-others-on-fail \"npm run build\" \"nodemon server/index.js\"",
     "build": "webpack --watch --mode development",
     "lint": "./node_modules/.bin/eslint",
-    "seed": "node database/seed.js"
+    "seed": "node database/seedCassandra.js",
+    "createC": "node database/indexCassandra.js"
   },
   "eslintConfig": {
     "extends": "airbnb",
@@ -31,6 +32,7 @@
     "faker": "^4.1.0",
     "fakergem": "^2.1.0",
     "jquery": "^3.5.1",
+    "k6": "0.0.0",
     "mongoose": "^5.9.22",
     "popper": "^1.0.1",
     "popper.js": "^1.16.1",

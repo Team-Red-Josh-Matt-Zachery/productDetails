@@ -54,9 +54,8 @@ const ProductDetails = ({
     {results
         && results.map((style, i) => (
           <div
-            key={style.style_id}
-            className="row d-inline-flex flex-wrap mx-auto mt-4 mb-3.5
-          "
+            key={style.id}
+            className="row d-inline-flex flex-wrap mx-auto mt-4 mb-3.5"
           >
             <div
               className="col-sm"
