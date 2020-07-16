@@ -108,3 +108,7 @@ photosDBSeed.csv
 skusDBSeed.csv
 stylesDBSeed.csv
 mockServerForSchema-less.js
+
+artillery.yml
+import_sidecountry*
+
