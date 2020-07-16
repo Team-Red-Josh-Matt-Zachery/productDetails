@@ -1,5 +1,7 @@
 const cassandra = require('cassandra-driver');
-// Addresses for clusters (currently 3)
+const { Client } = require('pg');
+
+// CASSANDRA Addresses for clusters (currently 1)
 const contactPoints = ['127.0.0.1'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
 const client = new cassandra.Client({ contactPoints, localDataCenter: 'datacenter1', keyspace: 'sidecountry' });
 

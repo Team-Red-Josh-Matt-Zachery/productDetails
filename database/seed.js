@@ -4,11 +4,8 @@ const csvWriter = require('csv-write-stream');
 const faker = require('faker');
 const { Faker } = require('fakergem');
 
-const SEED_AMOUNT = 1e7;
+const SEED_AMOUNT = 1e4;
 const writeProducts = csvWriter();
-const writePhotos = csvWriter();
-const writeStyles = csvWriter();
-const writeSkus = csvWriter();
 let i = 0;
 
 // how long did the CSV take to create?
@@ -16,10 +13,7 @@ const timeBefore = new Date().getTime(); // time before
 
 // setup of CSV seed
 const seedDataGeneration = () => {
-  writeProducts.pipe(fs.createWriteStream('productsDBSeed.csv'));
-  writePhotos.pipe(fs.createWriteStream('photosDBSeed.csv'));
-  writeStyles.pipe(fs.createWriteStream('stylesDBSeed.csv'));
-  writeSkus.pipe(fs.createWriteStream('skusDBSeed.csv'));
+  writeProducts.pipe(fs.createWriteStream('productsDBSeed.csv'), { delimiter: ';', decimalSeparator: '|' });
   function writing() {
     let heapy = true;
     while (i < SEED_AMOUNT && heapy) {
@@ -32,37 +26,13 @@ const seedDataGeneration = () => {
         name: Faker.Commerce.productName(),
         rating: Faker.Number.between(1, 10),
         slogan: faker.company.catchPhrase(),
+        style: `{name: ${Faker.Hipster.word()},price: ${Faker.Commerce.price({ min: 5, max: 380 })},sale_price: ${Faker.Commerce.price({ min: 0, max: 190 })},photos: {url: http://placeimg.com/100/100/any, thumbnail_url: http://placeimg.com/1000/1000/any},skus: {L: ${Faker.Number.between(0, 28)}, M: ${Faker.Number.between(0, 28)}, S: ${Faker.Number.between(0, 28)}, XL: ${Faker.Number.between(0, 28)}, XS: ${Faker.Number.between(0, 28)}, XXL: ${Faker.Number.between(0, 28)}, XXXL: ${Faker.Number.between(0, 28)}}}`,
       });
-      if (i <= 10000) {
-        heapy = writeStyles.write({
-          id: ((i - 1) % 1000) + 1,
-          name: Faker.Hipster.word(),
-          price: Faker.Commerce.price({ min: 5, max: 380 }),
-          sale_price: Faker.Commerce.price({ min: 0, max: 190 }),
-        });
-        heapy = writePhotos.write({
-          id: ((i - 1) % 1000) + 1,
-          full_photo: Faker.LoremFlickr.image('300x300', ['clothes']),
-          thumbnail_photo: Faker.LoremFlickr.image('50x50', ['clothes']),
-        });
-        heapy = writeSkus.write({
-          id: ((i - 1) % 1000) + 1,
-          L: Faker.Number.between(0, 28),
-          M: Faker.Number.between(0, 28),
-          S: Faker.Number.between(0, 28),
-          XL: Faker.Number.between(0, 28),
-          XS: Faker.Number.between(0, 28),
-          XXL: Faker.Number.between(0, 28),
-          XXXL: Faker.Number.between(0, 28),
-        });
-      }
     }
     writeProducts.once('drain', writing);
+    process.stdout.write(`${Math.floor((i / SEED_AMOUNT) * 100)}% complete.\r`);
     if (i === SEED_AMOUNT) {
       writeProducts.end();
-      writeSkus.end();
-      writePhotos.end();
-      writeStyles.end();
       // stop writing already
       const timeAfter = new Date().getTime(); // time after
       const timeTaken = timeAfter - timeBefore; // run-time difference
