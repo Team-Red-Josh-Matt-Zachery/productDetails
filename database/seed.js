@@ -64,7 +64,7 @@ const seedDataGeneration = () => {
       writePhotos.end();
       writeStyles.end();
       // stop writing already
-      const timeAfter = new Date().getTime(); // time afeter
+      const timeAfter = new Date().getTime(); // time after
       const timeTaken = timeAfter - timeBefore; // run-time difference
       console.log(`TIME to write CSV data: ${timeTaken / 1000} seconds.`);
     }
