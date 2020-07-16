@@ -4,12 +4,7 @@ import MainCarousel from './carousel/MainCarousel';
 import Description from './Description';
 import Thumbnails from './Thumbnails';
 import Checklist from './Checklist';
-<<<<<<< HEAD
-import Modal from './Modal';
-import axios from 'axios';
-=======
 // import Modal from './Modal';
->>>>>>> load-testing
 
 class App extends Component {
   constructor() {
@@ -20,13 +15,8 @@ class App extends Component {
       reviews: [],
       results: [],
       activeResult: [],
-<<<<<<< HEAD
-      currentStyle: 0,
-      currentProduct: 5,
-=======
       // currentStyle: 0,
       currentProduct: Math.floor(Math.random() * 1000 + 1),
->>>>>>> load-testing
       averageRating: 0,
       starPercentage: 0,
       modal: false,
@@ -51,13 +41,8 @@ class App extends Component {
       .then((data) => {
         this.setState({
           products: data.results[0],
-<<<<<<< HEAD
-          starPercentage: data.results[0].rating * 10,
-          averageRating: data.results[0].rating / 2,
-=======
           starPercentage: data.results[0].rating,
           averageRating: data.results[0].rating / 20,
->>>>>>> load-testing
         });
       });
   }
@@ -71,16 +56,10 @@ class App extends Component {
   // }
 
   getProductImages() {
-<<<<<<< HEAD
-    const { currentStyle, currentProduct } = this.state;
-    // fetch(`http://52.26.193.201:3000/products/${currentProduct}/styles/`)
-    fetch(`/products/${currentProduct}/styles/`)
-=======
     const { currentProduct } = this.state;
     // fetch(`http://52.26.193.201:3000/products/${currentProduct}/styles/`)
     const build = [];
     fetch(`/products/${currentProduct}/styles`)
->>>>>>> load-testing
       .then((res) => res.json())
       .then((data) => {
         build.push(data.results[0]);
@@ -118,27 +97,7 @@ class App extends Component {
     this.setState({
       modal: !modal,
       modalInfo: info,
-<<<<<<< HEAD
     });
-  }
-
-  averageStarRating() {
-    const { reviews } = this.state;
-    let ratingSum = 0;
-    reviews.forEach((review) => {
-      ratingSum += review.rating;
-    });
-    if (ratingSum) {
-      const averageRating = ratingSum / reviews.length;
-      const starPercentage = (averageRating / 5) * 100;
-      // this.setState({
-      //   starPercentage,
-      //   averageRating,
-      // });
-    }
-=======
-    });
->>>>>>> load-testing
   }
 
   // averageStarRating() {
@@ -179,19 +138,6 @@ class App extends Component {
       modal,
     } = this.state;
 
-<<<<<<< HEAD
-    // console.log(
-    //   'results',
-    //   results,
-    //   'app activeResult',
-    //   activeResult,
-    //   'products',
-    //   products,
-    //   'reviews',
-    //   reviews,
-    // );
-=======
->>>>>>> load-testing
     return (
       <div className="container-fluid mb-5">
         <div className="jumbotron jumbotron-fluid">
