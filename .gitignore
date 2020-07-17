@@ -103,12 +103,16 @@ dist
 # TernJS port file
 .tern-port
 
+# CSV files from seed
 productsDBSeed.csv
 photosDBSeed.csv
 skusDBSeed.csv
 stylesDBSeed.csv
 mockServerForSchema-less.js
 
-artillery.yml
+# Cassandra reports
 import_sidecountry*
+
+# Postgres reports
+report.*
 

@@ -24,9 +24,12 @@ DELIMITER ',' CSV HEADER;
 */
 
 // CREATE INDEXES FOR ID
-// CREATE INDEX sidecountry_hash ON products USING HASH (id);
-// CREATE INDEX sidecountry_brin ON products USING BRIN (id) WITH (pages_per_range = 256);
+// CREATE INDEX products_hash ON products USING HASH (id);
+// CREATE INDEX products_brin ON products USING BRIN (id); WITH (pages_per_range = 32);
 
 // remove indexes
-// DROP INDEX sidecountry_hash;
-// DROP INDEX sidecountry_brin;
+// DROP INDEX products_hash;
+// DROP INDEX products_brin;
+
+// remove primary key
+// ALTER TABLE products DROP CONSTRAINT products_pkey;

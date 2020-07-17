@@ -127,8 +127,8 @@ const getProducts = (cb) => {
 
 // DB QUERY TO GET PRODUCT
 const getProduct = (params, cb) => {
-  const query = `SELECT * FROM products WHERE id = ${params}`;
-  clientP.query(query, (err, results) => {
+  const query = 'SELECT name, category, default_price, description, rating, slogan FROM products WHERE id = $1';
+  clientP.query(query, [params], (err, results) => {
     if (err) {
       cb(err.stack);
     } else {
