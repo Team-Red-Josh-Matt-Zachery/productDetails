@@ -10,7 +10,8 @@
     "build": "webpack --watch --mode development",
     "lint": "./node_modules/.bin/eslint",
     "seed": "node database/seed.js",
-    "createC": "node database/indexCassandra.js"
+    "createC": "node database/indexCassandra.js",
+    "createP": "node database/indexPostgres.js"
   },
   "eslintConfig": {
     "extends": "airbnb",

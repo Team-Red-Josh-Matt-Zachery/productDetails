@@ -4,7 +4,7 @@ const csvWriter = require('csv-write-stream');
 const faker = require('faker');
 const { Faker } = require('fakergem');
 
-const SEED_AMOUNT = 1e4;
+const SEED_AMOUNT = 1e7;
 const writeProducts = csvWriter();
 let i = 0;
 
@@ -30,7 +30,7 @@ const seedDataGeneration = () => {
       });
     }
     writeProducts.once('drain', writing);
-    process.stdout.write(`${Math.floor((i / SEED_AMOUNT) * 100)}% complete.\r`);
+    process.stdout.write(` ${((i / SEED_AMOUNT) * 100).toFixed(2)}% complete.  Time Elapsed: ${((new Date().getTime() - timeBefore) / 60000).toFixed(2)} minutes.  Estimated time left: ${Math.round(((new Date().getTime() - timeBefore) / (60000 * i)) * (SEED_AMOUNT - i))} minutes \r`);
     if (i === SEED_AMOUNT) {
       writeProducts.end();
       // stop writing already
