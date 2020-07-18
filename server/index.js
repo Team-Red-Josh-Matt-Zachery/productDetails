@@ -11,4 +11,5 @@ app.use(express.static('public'));
 app.use('/products', router);
 
 // eslint-disable-next-line no-console
-app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
+// app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Server listening on port ${port}`));
