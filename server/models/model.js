@@ -2,12 +2,12 @@ const cassandra = require('cassandra-driver');
 const { Client } = require('pg');
 
 // CASSANDRA Addresses for clusters (currently 1)
-// const contactPoints = ['127.0.0.1'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
-// const client = new cassandra.Client({ contactPoints, localDataCenter: 'datacenter1', keyspace: 'sidecountry' });
+const contactPoints = ['3.236.59.115'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
+const client = new cassandra.Client({ contactPoints, localDataCenter: 'us-east', keyspace: 'sidecountry' });
 
 // Postgres connection
-const clientP = new Client('sidecountry');
-clientP.connect();
+// const clientP = new Client('sidecountry');
+// clientP.connect();
 /* *******************************************************************
 ************************* CASSANDRA DBMS *****************************
 ******************************************************************* */
@@ -23,7 +23,6 @@ const addProduct = (params, cb) => {
   });
 };
 
-/*
 // DB QUERY TO GET ALL PRODUCTS
 const getProducts = (cb) => {
   const query = 'SELECT * FROM sidecountry.products';
@@ -47,7 +46,7 @@ const getProduct = (params, cb) => {
       cb(null, results.rows);
     }
   });
-}; */
+};
 
 // DB QUERY TO GET STYLE
 const getProductStyle = (params, cb) => {
@@ -113,29 +112,29 @@ const removeProduct = (params, cb) => {
 ************************ POSTGRESQL DBMS *****************************
 ******************************************************************* */
 // DB QUERY TO GET ALL PRODUCTS
-const getProducts = (cb) => {
-  const query = 'SELECT * FROM sidecountry.products';
-  clientP.query(query, (err, results) => {
-    if (err) {
-      cb(err);
-    } else {
-      // console.log(results.rows);
-      cb(null, results.rows);
-    }
-  });
-};
+// const getProducts = (cb) => {
+//   const query = 'SELECT * FROM sidecountry.products';
+//   clientP.query(query, (err, results) => {
+//     if (err) {
+//       cb(err);
+//     } else {
+//       // console.log(results.rows);
+//       cb(null, results.rows);
+//     }
+//   });
+// };
 
-// DB QUERY TO GET PRODUCT
-const getProduct = (params, cb) => {
-  const query = 'SELECT name, category, default_price, description, rating, slogan FROM products WHERE id = $1';
-  clientP.query(query, [params], (err, results) => {
-    if (err) {
-      cb(err.stack);
-    } else {
-      cb(null, results.rows[0]);
-    }
-  });
-};
+// // DB QUERY TO GET PRODUCT
+// const getProduct = (params, cb) => {
+//   const query = 'SELECT name, category, default_price, description, rating, slogan FROM products WHERE id = $1';
+//   clientP.query(query, [params], (err, results) => {
+//     if (err) {
+//       cb(err.stack);
+//     } else {
+//       cb(null, results.rows[0]);
+//     }
+//   });
+// };
 
 module.exports = {
   addProduct,

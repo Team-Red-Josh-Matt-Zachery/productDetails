@@ -78,5 +78,9 @@ client.connect()
 
 // SQL DB: postgres
 
+// ALTER KEYSPACE sidecountry WITH REPLICATION = {'class': 'NetworkTopologyStrategy', 'ExistingDC':3, 'NewDC':3} AND DURABLE_WRITES = false;
 
-ALTER KEYSPACE sidecountry WITH REPLICATION = {'class': 'NetworkTopologyStrategy', 'ExistingDC':3, 'NewDC':3} AND DURABLE_WRITES = false;
+// on EC2 instance:
+// CREATE KEYSPACE IF NOT EXISTS sidecountry WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND DURABLE_WRITES = false;
+// CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT, style TEXT);
+// COPY sidecountry.products FROM 'productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
