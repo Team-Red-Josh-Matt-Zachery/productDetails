@@ -2,8 +2,8 @@ const cassandra = require('cassandra-driver');
 const { Client } = require('pg');
 
 // CASSANDRA Addresses for clusters (currently 1)
-const contactPoints = ['3.236.59.115'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
-const client = new cassandra.Client({ contactPoints, localDataCenter: 'us-east', keyspace: 'sidecountry' });
+const contactPoints = ['127.0.0.1'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
+const client = new cassandra.Client({ contactPoints, localDataCenter: 'datacenter1', keyspace: 'sidecountry' });
 
 // Postgres connection
 // const clientP = new Client('sidecountry');
@@ -50,6 +50,43 @@ const getProduct = (params, cb) => {
 
 // DB QUERY TO GET STYLE
 const getProductStyle = (params, cb) => {
+  const query = 'SELECT style FROM sidecountry.products WHERE id = ?';
+  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, results.rows);
+    }
+  });
+};
+
+// DB QUERY TO GET PHOTOS
+const getProductPhotos = (params, cb) => {
+  const query = 'SELECT * FROM sidecountry.photos WHERE id = ?';
+  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, [results.rows]);
+    }
+  });
+};
+
+// DB QUERY TO GET SKUS
+const getProductSkus = (params, cb) => {
+  const query = 'SELECT * FROM sidecountry.skus WHERE id = ?';
+  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, results.rows);
+    }
+  });
+};
+
+/* ********** PREVIOUS METHOD WHEN THERE WERE 4 TABLES ********
+// DB QUERY TO GET STYLE
+const getProductStyle = (params, cb) => {
   const query = 'SELECT * FROM sidecountry.styles WHERE id = ?';
   client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
     if (err) {
@@ -83,6 +120,7 @@ const getProductSkus = (params, cb) => {
     }
   });
 };
+*************************************************************** */
 
 // !EXAMPLE ONLY ! DB QUERY TO UPDATE RECORD
 const editProduct = (params, cb) => {
@@ -142,6 +180,7 @@ module.exports = {
   getProduct,
   getProductStyle,
   getProductPhotos,
+  getProductSkus,
   editProduct,
   removeProduct,
 };

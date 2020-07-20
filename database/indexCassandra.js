@@ -21,53 +21,23 @@ client.connect()
   //   console.log('Keyspace created');
   // })
   .then(() => { // remove data from the tables
-    const queryArr = [
-      'TRUNCATE sidecountry.products;',
-      'TRUNCATE sidecountry.photos;',
-      'TRUNCATE sidecountry.skus;',
-      'TRUNCATE sidecountry.styles;',
-    ];
-    queryArr.forEach((ele) => {
-      client.execute(ele);
-    });
-    console.log('Data removed from tables');
+    const query = 'TRUNCATE sidecountry.products;';
+    client.execute(query);
+    console.log('Data removed from table');
   })
   .then(() => { // drop the tables if they exist still, somehow
-    const queryArr = [
-      'DROP TABLE sidecountry.products;',
-      'DROP TABLE sidecountry.photos;',
-      'DROP TABLE sidecountry.skus;',
-      'DROP TABLE sidecountry.styles;',
-    ];
-    queryArr.forEach((ele) => {
-      client.execute(ele);
-    });
-    console.log('Tables Dropped');
+    const query = 'DROP TABLE sidecountry.products;';
+    client.execute(query);
+    console.log('Table Dropped');
   })
   .then(() => { // create the tables
-    const queryArr = [
-      'CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT,);',
-      'CREATE TABLE sidecountry.photos(id INT PRIMARY KEY, url VARCHAR, thumbnail_url VARCHAR,);',
-      'CREATE TABLE sidecountry.skus(id INT PRIMARY KEY, L SMALLINT, M SMALLINT, S SMALLINT, XL SMALLINT, XS SMALLINT, XXL SMALLINT, XXXL SMALLINT,);',
-      'CREATE TABLE sidecountry.styles(id INT PRIMARY KEY, name TEXT, price DECIMAL, sale_price DECIMAL,);',
-    ];
-
-    queryArr.forEach((ele) => {
-      client.execute(ele);
-    });
+    const query = 'CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT,);';
+    client.execute(query);
     console.log('Tables Created');
   })
   .then(() => { // when copying data from CSV seed file
-    const queryArr = [
-      "COPY sidecountry.products FROM 'productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;",
-      "COPY sidecountry.photos FROM 'photosDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;",
-      "COPY sidecountry.skus FROM 'skusDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;",
-      "COPY sidecountry.styles FROM 'stylesDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;",
-    ];
-
-    queryArr.forEach((ele) => {
-      client.execute(ele);
-    });
+    const query = "COPY sidecountry.products FROM 'productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;";
+    client.execute(query);
     console.log('CSV Copied into Tables');
     return client.shutdown();
   })
