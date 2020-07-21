@@ -120,6 +120,7 @@ const getProductSkus = (params, cb) => {
     if (err) {
       cb(err);
     } else {
+      console.log(results.rows);
       cb(null, results.rows);
     }
   });

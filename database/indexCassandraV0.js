@@ -28,8 +28,8 @@ CREATE TABLE sidecountry.products(
 
 CREATE TABLE sidecountry.photos(
   id INT PRIMARY KEY,
-  full_photo VARCHAR,
-  thumbnail_photo VARCHAR,
+  thumbnail_url VARCHAR,
+  url VARCHAR,
 );
 
 CREATE TABLE sidecountry.skus(
@@ -46,7 +46,7 @@ CREATE TABLE sidecountry.skus(
 CREATE TABLE sidecountry.styles(
   id INT PRIMARY KEY,
   name TEXT,
-  price DECIMAL,
+  original_price DECIMAL,
   sale_price DECIMAL,
 );
 

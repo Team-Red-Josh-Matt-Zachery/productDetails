@@ -9,7 +9,7 @@ const writeProducts = csvWriter();
 const writePhotos = csvWriter();
 const writeStyles = csvWriter();
 const writeSkus = csvWriter();
-let i = 1;
+let i = 0;
 
 // how long did the CSV take to create?
 const timeBefore = new Date().getTime(); // time before
@@ -22,7 +22,8 @@ const seedDataGeneration = () => {
   writeSkus.pipe(fs.createWriteStream('skusDBSeed.csv'));
   function writing() {
     let heapy = true;
-    while (i <= SEED_AMOUNT && heapy) {
+    while (i < SEED_AMOUNT && heapy) {
+      i += 1;
       heapy = writeProducts.write({
         id: i,
         category: Faker.Commerce.department(1),
@@ -34,18 +35,18 @@ const seedDataGeneration = () => {
       });
       if (i <= SEED_AMOUNT / 10) {
         heapy = writeStyles.write({
-          id: i % (SEED_AMOUNT / 100),
+          id: (i % (SEED_AMOUNT / 100)),
           name: Faker.Hipster.word(),
           original_price: Faker.Commerce.price({ min: 5, max: 380 }),
           sale_price: Faker.Commerce.price({ min: 0, max: 190 }),
         });
         heapy = writePhotos.write({
-          id: i % (SEED_AMOUNT / 100),
-          thumbnail_url: Faker.LoremPixel.image(),
-          url: Faker.LoremPixel.image(),
+          id: (i % (SEED_AMOUNT / 100)),
+          thumbnail_url: 'http://placeimg.com/100/100/any',
+          url: 'http://placeimg.com/1000/1000/any',
         });
         heapy = writeSkus.write({
-          id: i % (SEED_AMOUNT / 100),
+          id: (i % (SEED_AMOUNT / 100)),
           L: Faker.Number.between(0, 28),
           M: Faker.Number.between(0, 28),
           S: Faker.Number.between(0, 28),
@@ -54,7 +55,6 @@ const seedDataGeneration = () => {
           XXL: Faker.Number.between(0, 28),
           XXXL: Faker.Number.between(0, 28),
         });
-        i += 1;
       }
     }
     writeProducts.once('drain', writing);
