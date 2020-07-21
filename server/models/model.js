@@ -48,22 +48,25 @@ const getProduct = (params, cb) => {
   });
 };
 
+/* ********** 1 TABLE ATTEMPT ********
 // DB QUERY TO GET STYLE
 const getProductStyle = (params, cb) => {
   const query = 'SELECT style FROM sidecountry.products WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  client.execute(query, [params], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
-      cb(null, results.rows);
+      const thing = JSON.parse(results.rows[0]);
+      console.log(thing[0]);
+      cb(null, results.rows[0].style);
     }
   });
 };
 
 // DB QUERY TO GET PHOTOS
 const getProductPhotos = (params, cb) => {
-  const query = 'SELECT * FROM sidecountry.photos WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  const query = 'SELECT style FROM sidecountry.products WHERE id = ?';
+  client.execute(query, [params], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
@@ -74,8 +77,8 @@ const getProductPhotos = (params, cb) => {
 
 // DB QUERY TO GET SKUS
 const getProductSkus = (params, cb) => {
-  const query = 'SELECT * FROM sidecountry.skus WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  const query = 'SELECT style FROM sidecountry.products WHERE id = ?';
+  client.execute(query, [params], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
@@ -83,8 +86,9 @@ const getProductSkus = (params, cb) => {
     }
   });
 };
+*/
 
-/* ********** PREVIOUS METHOD WHEN THERE WERE 4 TABLES ********
+// ********** PREVIOUS METHOD WHEN THERE WERE 4 TABLES ********
 // DB QUERY TO GET STYLE
 const getProductStyle = (params, cb) => {
   const query = 'SELECT * FROM sidecountry.styles WHERE id = ?';
@@ -120,7 +124,7 @@ const getProductSkus = (params, cb) => {
     }
   });
 };
-*************************************************************** */
+// *************************************************************** */
 
 // !EXAMPLE ONLY ! DB QUERY TO UPDATE RECORD
 const editProduct = (params, cb) => {

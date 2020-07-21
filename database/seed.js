@@ -4,7 +4,7 @@ const csvWriter = require('csv-write-stream');
 const faker = require('faker');
 const { Faker } = require('fakergem');
 
-const SEED_AMOUNT = 1e7;
+const SEED_AMOUNT = 1e1;
 const writeProducts = csvWriter();
 let i = 0;
 
@@ -13,7 +13,7 @@ const timeBefore = new Date().getTime(); // time before
 
 // setup of CSV seed
 const seedDataGeneration = () => {
-  writeProducts.pipe(fs.createWriteStream('productsDBSeed.csv'), { delimiter: ';', decimalSeparator: '|' });
+  writeProducts.pipe(fs.createWriteStream('productsDBSeed.csv'), { delimiter: ',' });
   function writing() {
     let heapy = true;
     while (i < SEED_AMOUNT && heapy) {
@@ -26,7 +26,7 @@ const seedDataGeneration = () => {
         name: Faker.Commerce.productName(),
         rating: Faker.Number.between(1, 10),
         slogan: faker.company.catchPhrase(),
-        style: `{name: ${Faker.Hipster.word()},price: ${Faker.Commerce.price({ min: 5, max: 380 })},sale_price: ${Faker.Commerce.price({ min: 0, max: 190 })},photos: {url: http://placeimg.com/100/100/any, thumbnail_url: http://placeimg.com/1000/1000/any},skus: {L: ${Faker.Number.between(0, 28)}, M: ${Faker.Number.between(0, 28)}, S: ${Faker.Number.between(0, 28)}, XL: ${Faker.Number.between(0, 28)}, XS: ${Faker.Number.between(0, 28)}, XXL: ${Faker.Number.between(0, 28)}, XXXL: ${Faker.Number.between(0, 28)}}}`,
+        style: `{'name': '${Faker.Hipster.word()}','price': '${Faker.Commerce.price({ min: 5, max: 380 })}','sale_price': '${Faker.Commerce.price({ min: 0, max: 190 })}','photos': {'url': 'http://placeimg.com/100/100/any', 'thumbnail_url': 'http://placeimg.com/1000/1000/any}','skus': {'L': '${Faker.Number.between(0, 28)}', 'M': '${Faker.Number.between(0, 28)}', 'S': '${Faker.Number.between(0, 28)}', 'XL': '${Faker.Number.between(0, 28)}', 'XS': '${Faker.Number.between(0, 28)}', 'XXL': '${Faker.Number.between(0, 28)}', 'XXXL': '${Faker.Number.between(0, 28)}'}`,
       });
     }
     writeProducts.once('drain', writing);
@@ -36,10 +36,12 @@ const seedDataGeneration = () => {
       // stop writing already
       const timeAfter = new Date().getTime(); // time after
       const timeTaken = timeAfter - timeBefore; // run-time difference
-      console.log(`TIME to write CSV data: ${timeTaken / 1000} seconds.`);
+      process.stdout.write(`\nTIME to write CSV data: ${timeTaken / 1000} seconds.`);
     }
   }
   writing();
 };
 
 seedDataGeneration();
+
+// `{name: ${Faker.Hipster.word()},price: ${Faker.Commerce.price({ min: 5, max: 380 })},sale_price: ${Faker.Commerce.price({ min: 0, max: 190 })},photos: {url: http://placeimg.com/100/100/any, thumbnail_url: http://placeimg.com/1000/1000/any},skus: {L: ${Faker.Number.between(0, 28)}, M: ${Faker.Number.between(0, 28)}, S: ${Faker.Number.between(0, 28)}, XL: ${Faker.Number.between(0, 28)}, XS: ${Faker.Number.between(0, 28)}, XXL: ${Faker.Number.between(0, 28)}, XXXL: ${Faker.Number.between(0, 28)}}`,

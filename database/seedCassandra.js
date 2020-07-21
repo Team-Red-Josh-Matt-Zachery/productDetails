@@ -9,7 +9,7 @@ const writeProducts = csvWriter();
 const writePhotos = csvWriter();
 const writeStyles = csvWriter();
 const writeSkus = csvWriter();
-let i = 0;
+let i = 1;
 
 // how long did the CSV take to create?
 const timeBefore = new Date().getTime(); // time before
@@ -22,8 +22,7 @@ const seedDataGeneration = () => {
   writeSkus.pipe(fs.createWriteStream('skusDBSeed.csv'));
   function writing() {
     let heapy = true;
-    while (i < SEED_AMOUNT && heapy) {
-      i += 1;
+    while (i <= SEED_AMOUNT && heapy) {
       heapy = writeProducts.write({
         id: i,
         category: Faker.Commerce.department(1),
@@ -33,20 +32,20 @@ const seedDataGeneration = () => {
         rating: Faker.Number.between(1, 100),
         slogan: faker.company.catchPhrase(),
       });
-      if (i <= 10000) {
+      if (i <= SEED_AMOUNT / 10) {
         heapy = writeStyles.write({
-          id: (i - 1) % 1000,
+          id: i % (SEED_AMOUNT / 100),
           name: Faker.Hipster.word(),
-          price: Faker.Commerce.price({ min: 5, max: 380 }),
+          original_price: Faker.Commerce.price({ min: 5, max: 380 }),
           sale_price: Faker.Commerce.price({ min: 0, max: 190 }),
         });
         heapy = writePhotos.write({
-          id: (i - 1) % 1000,
+          id: i % (SEED_AMOUNT / 100),
           thumbnail_url: Faker.LoremPixel.image(),
           url: Faker.LoremPixel.image(),
         });
         heapy = writeSkus.write({
-          id: (i - 1) % 1000,
+          id: i % (SEED_AMOUNT / 100),
           L: Faker.Number.between(0, 28),
           M: Faker.Number.between(0, 28),
           S: Faker.Number.between(0, 28),
@@ -55,9 +54,11 @@ const seedDataGeneration = () => {
           XXL: Faker.Number.between(0, 28),
           XXXL: Faker.Number.between(0, 28),
         });
+        i += 1;
       }
     }
     writeProducts.once('drain', writing);
+    process.stdout.write(` ${((i / SEED_AMOUNT) * 100).toFixed(2)}% complete.  Time Elapsed: ${((new Date().getTime() - timeBefore) / 60000).toFixed(2)} minutes.  Estimated time left: ${Math.round(((new Date().getTime() - timeBefore) / (60000 * i)) * (SEED_AMOUNT - i))} minutes \r`);
     if (i === SEED_AMOUNT) {
       writeProducts.end();
       writeSkus.end();
@@ -66,7 +67,7 @@ const seedDataGeneration = () => {
       // stop writing already
       const timeAfter = new Date().getTime(); // time afeter
       const timeTaken = timeAfter - timeBefore; // run-time difference
-      console.log(`TIME to write CSV data: ${timeTaken / 1000} seconds.`);
+      process.stdout.write(`\nTIME to write CSV data: ${timeTaken / 1000} seconds.`);
     }
   }
   writing();

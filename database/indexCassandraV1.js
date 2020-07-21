@@ -31,7 +31,7 @@ client.connect()
     console.log('Table Dropped');
   })
   .then(() => { // create the tables
-    const query = 'CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT,);';
+    const query = 'CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT, style TEXT);';
     client.execute(query);
     console.log('Tables Created');
   })
@@ -54,3 +54,9 @@ client.connect()
 // CREATE KEYSPACE IF NOT EXISTS sidecountry WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND DURABLE_WRITES = false;
 // CREATE TABLE sidecountry.products(id INT PRIMARY KEY, category TEXT, default_price DECIMAL, description VARCHAR, name TEXT, rating INT, slogan TEXT, style TEXT);
 // COPY sidecountry.products FROM 'productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+
+
+// USER DEFINED TYPE
+// CREATE TYPE sidecountry.skus (L INT, M INT, S INT, XL INT, XS INT, XXL INT, XXXL INT);
+// CREATE TYPE sidecountry.photos (url TEXT, thumbnail_url TEXT);
+// CREATE TYPE sidecountry.style (name TEXT, price DECIMAL, sale_price DECIMAL, photos LIST<FROZEN<photos>>, skus LIST<FROZEN<skus>>);
