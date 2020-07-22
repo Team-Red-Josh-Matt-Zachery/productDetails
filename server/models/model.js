@@ -2,7 +2,7 @@ const cassandra = require('cassandra-driver');
 const { Client } = require('pg');
 
 // CASSANDRA Addresses for clusters (currently 1)
-const contactPoints = ['127.0.0.1'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
+const contactPoints = ['3.236.219.137'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
 const client = new cassandra.Client({ contactPoints, localDataCenter: 'datacenter1', keyspace: 'sidecountry' });
 
 // Postgres connection
@@ -92,7 +92,7 @@ const getProductSkus = (params, cb) => {
 // DB QUERY TO GET STYLE
 const getProductStyle = (params, cb) => {
   const query = 'SELECT * FROM sidecountry.styles WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  client.execute(query, [(params % 100) + 1], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
@@ -103,11 +103,12 @@ const getProductStyle = (params, cb) => {
 
 // DB QUERY TO GET PHOTOS
 const getProductPhotos = (params, cb) => {
-  const query = 'SELECT * FROM sidecountry.photos WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  const query = 'SELECT url, thumbnail_url FROM sidecountry.photos WHERE id = ?';
+  client.execute(query, [(params % 100) + 1], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
+      console.log(results.rows);
       cb(null, [results.rows]);
     }
   });
@@ -116,11 +117,10 @@ const getProductPhotos = (params, cb) => {
 // DB QUERY TO GET SKUS
 const getProductSkus = (params, cb) => {
   const query = 'SELECT * FROM sidecountry.skus WHERE id = ?';
-  client.execute(query, [(params % 1000) + 1], { prepare: true }, (err, results) => {
+  client.execute(query, [(params % 100) + 1], { prepare: true }, (err, results) => {
     if (err) {
       cb(err);
     } else {
-      console.log(results.rows);
       cb(null, results.rows);
     }
   });

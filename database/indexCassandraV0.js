@@ -51,9 +51,9 @@ CREATE TABLE sidecountry.styles(
 );
 
 // when copying data from CSV seed file
-COPY sidecountry.products FROM 'productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
-COPY sidecountry.photos FROM 'photosDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
-COPY sidecountry.skus FROM 'skusDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
-COPY sidecountry.styles FROM 'stylesDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY sidecountry.products FROM '~/productsDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY sidecountry.photos FROM '~/photosDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY sidecountry.skus FROM '~/skusDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY sidecountry.styles FROM '~/stylesDBSeed.csv' WITH DELIMITER=',' AND HEADER=TRUE;
 
 // SQL DB: postgres
