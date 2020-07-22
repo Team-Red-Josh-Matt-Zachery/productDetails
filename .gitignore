@@ -117,5 +117,5 @@ import_sidecountry*
 report.*
 
 # New relic testing
-newrelic.js
+# newrelic.js
 newrelic_*
