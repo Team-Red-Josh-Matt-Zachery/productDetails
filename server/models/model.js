@@ -4,7 +4,7 @@ const { Client } = require('pg');
 // CASSANDRA Addresses for clusters (currently 1)
 // const contactPoints = ['127.0.0.1'] //['3.237.11.59'] //, '127.0.0.2', '127.0.0.3', '127.0.0.4', '127.0.0.5'];
 // const client = new cassandra.Client({ contactPoints: ['127.0.0.1'],localDataCenter: 'datacenter1', keyspace: 'sidecountry' });
-const client = new cassandra.Client({ contactPoints: ['3.237.11.59'], localDataCenter: 'us-east', keyspace: 'sidecountry' });
+const client = new cassandra.Client({ contactPoints: ['3.231.210.226'], localDataCenter: 'us-east', keyspace: 'sidecountry' });
 
 // Postgres connection
 // const clientP = new Client('sidecountry');

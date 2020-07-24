@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/products', router);
-app.get('/loaderio-b5dbc8ec0886d06fe1feba03b86448c3', (req, res) => {
-  res.status(200).send('loaderio-b5dbc8ec0886d06fe1feba03b86448c3');
+app.get('/loaderio-8802544ae101ddcc30913b30348c052a', (req, res) => {
+  res.status(200).send('loaderio-8802544ae101ddcc30913b30348c052a');
 });
 
 // eslint-disable-next-line no-console
